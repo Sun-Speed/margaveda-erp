@@ -39,7 +39,9 @@ export default function LoginPage() {
 
       login(response);
 
-      navigate("/dashboard");
+      navigate("/app/dashboard", {
+    replace: true,
+});
     } catch (error) {
       alert(error?.response?.data?.message || "Login Failed");
     } finally {

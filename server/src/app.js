@@ -9,6 +9,7 @@ const testRoutes = require("./routes/test.routes");
 const customerRoutes = require("./routes/customer.routes");
 const setupRoutes = require("./modules/setup/setup.routes");
 const authRoutes = require("./modules/auth/auth.routes");
+const institutionRoutes = require("./modules/institutions/institution.routes");
 
 const app = express();
 
@@ -46,6 +47,11 @@ app.use("/api/customers", customerRoutes);
 app.use("/api/setup", setupRoutes);
 
 app.use("/api/auth", authRoutes);
+
+app.use(
+    "/api/institutions",
+    institutionRoutes
+);
 
 /*
 |--------------------------------------------------------------------------

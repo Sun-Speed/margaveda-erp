@@ -1,6 +1,6 @@
 const roleRepository = require("../repositories/role.repository");
 
-const defaultRoles = require("../constants/defaultRoles");
+const defaultRoles = require("../constants/roles");
 
 class RoleSeederService {
 

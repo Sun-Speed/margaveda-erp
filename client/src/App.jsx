@@ -2,19 +2,22 @@ import { BrowserRouter } from "react-router-dom";
 
 import AppRoutes from "@/routes/AppRoutes";
 
-import { SetupProvider } from "@/contexts/SetupContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { SetupProvider } from "@/contexts/SetupContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <AuthProvider>
-        <SetupProvider>
-          <AppRoutes />
-        </SetupProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <ThemeProvider>
+                <AuthProvider>
+                    <SetupProvider>
+                        <AppRoutes />
+                    </SetupProvider>
+                </AuthProvider>
+            </ThemeProvider>
+        </BrowserRouter>
+    );
 }
 
 export default App;

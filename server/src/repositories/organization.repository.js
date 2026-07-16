@@ -3,22 +3,81 @@ const Organization = require("../models/tenant/Organization.model");
 class OrganizationRepository {
 
     async create(data, session = null) {
-        const [organization] = await Organization.create([data], { session });
-        return organization;
+
+        const organization = new Organization(data);
+
+        return await organization.save({ session });
+
     }
 
     async findById(id) {
-        return Organization.findById(id);
+
+        return await Organization.findById(id);
+
+    }
+
+    async findByCustomer(customerId) {
+
+        return await Organization.find({
+            customerId,
+        }).sort({
+            createdAt: -1,
+        });
+
+    }
+
+    async findByCode(code) {
+
+        return await Organization.findOne({
+            code,
+        });
+
     }
 
     async update(id, data) {
-        return Organization.findByIdAndUpdate(id, data, {
-            new: true,
+
+        return await Organization.findByIdAndUpdate(
+            id,
+            data,
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+    }
+
+    async existsByCode(customerId, code) {
+
+        return await Organization.exists({
+            customerId,
+            code,
         });
+
+    }
+
+    async existsByEmail(customerId, email) {
+
+        return await Organization.exists({
+            customerId,
+            email,
+        });
+
+    }
+
+    async existsByPhone(customerId, phone) {
+
+        return await Organization.exists({
+            customerId,
+            phone,
+        });
+
     }
 
     async delete(id) {
-        return Organization.findByIdAndDelete(id);
+
+        return await Organization.findByIdAndDelete(id);
+
     }
 
 }

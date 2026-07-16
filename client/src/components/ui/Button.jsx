@@ -1,22 +1,20 @@
 export default function Button({
   children,
-
   type = "button",
-
   variant = "primary",
-
   className = "",
-
   disabled = false,
-
   ...props
 }) {
   const variants = {
-    primary: "bg-blue-600 hover:bg-blue-700 text-white",
-
-    secondary: "bg-gray-200 hover:bg-gray-300 text-black",
-
-    danger: "bg-red-600 hover:bg-red-700 text-white",
+    // Elegant, glowing white button for primary actions
+    primary: "bg-white text-black hover:bg-gray-100 shadow-[0_0_15px_rgba(255,255,255,0.2)]",
+    
+    // Glassmorphism effect for secondary actions
+    secondary: "bg-white/5 border border-white/10 text-white hover:bg-white/10 backdrop-blur-md",
+    
+    // Subtle red with a glowing hint for danger
+    danger: "bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20",
   };
 
   return (
@@ -24,27 +22,16 @@ export default function Button({
       type={type}
       disabled={disabled}
       className={`
-
-                px-5
-
-                py-3
-
-                rounded-xl
-
-                transition
-
-                font-medium
-
-                ${variants[variant]}
-
-                ${disabled ? "opacity-50 cursor-not-allowed" : ""}
-
-                ${className}
-
-            `}
+        relative px-6 py-3 rounded-2xl transition-all duration-300 font-medium
+        active:scale-[0.98]
+        disabled:opacity-40 disabled:cursor-not-allowed
+        ${variants[variant]}
+        ${className}
+      `}
       {...props}
     >
-      {children}
+      {/* Optional: Add a subtle inner shine effect */}
+      <span className="relative z-10">{children}</span>
     </button>
   );
 }

@@ -1,54 +1,130 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")));
+  // -----------------------------
+  // Session Storage Data
+  // -----------------------------
 
   const [token, setToken] = useState(sessionStorage.getItem("token"));
+
+  const [user, setUser] = useState(() => {
+    const data = sessionStorage.getItem("user");
+    return data ? JSON.parse(data) : null;
+  });
+
+  const [memberships, setMemberships] = useState(() => {
+    const data = sessionStorage.getItem("memberships");
+    return data ? JSON.parse(data) : [];
+  });
+
+  const [currentOrganization, setCurrentOrganization] = useState(() => {
+    const data = sessionStorage.getItem("organization");
+    return data ? JSON.parse(data) : null;
+  });
+
+  // -----------------------------
+  // Current Role
+  // -----------------------------
+
+  const currentRole = useMemo(() => {
+    if (!memberships.length) return null;
+
+    return memberships[0]?.roleId?.name || null;
+  }, [memberships]);
+
+  // -----------------------------
+  // Login
+  // -----------------------------
 
   const login = (data) => {
     sessionStorage.setItem("token", data.token);
 
     sessionStorage.setItem("user", JSON.stringify(data.user));
 
+    sessionStorage.setItem("memberships", JSON.stringify(data.memberships));
+
     sessionStorage.setItem(
       "organization",
       JSON.stringify(data.currentOrganization),
     );
 
-    sessionStorage.setItem("memberships", JSON.stringify(data.memberships));
+    setToken(data.token);
 
     setUser(data.user);
 
-    setToken(data.token);
+    setMemberships(data.memberships);
+
+    setCurrentOrganization(data.currentOrganization);
   };
 
+  // -----------------------------
+  // Logout
+  // -----------------------------
+
   const logout = () => {
-    sessionStorage.clear();
+    sessionStorage.removeItem("token");
+
+    sessionStorage.removeItem("user");
+
+    sessionStorage.removeItem("memberships");
+
+    sessionStorage.removeItem("organization");
+
+    setToken(null);
 
     setUser(null);
 
-    setToken(null);
+    setMemberships([]);
+
+    setCurrentOrganization(null);
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
+  // -----------------------------
+  // Switch Organization
+  // -----------------------------
 
-        token,
+  const switchOrganization = (organizationId) => {
+    const membership = memberships.find(
+      (item) => item.organizationId._id === organizationId,
+    );
 
-        login,
+    if (!membership) return;
 
-        logout,
+    sessionStorage.setItem(
+      "organization",
+      JSON.stringify(membership.organizationId),
+    );
 
-        isAuthenticated: !!token,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+    setCurrentOrganization(membership.organizationId);
+  };
+
+  // -----------------------------
+  // Context
+  // -----------------------------
+
+  const value = {
+    token,
+
+    user,
+
+    memberships,
+
+    currentOrganization,
+
+    currentRole,
+
+    login,
+
+    logout,
+
+    switchOrganization,
+
+    isAuthenticated: !!token,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

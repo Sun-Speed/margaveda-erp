@@ -29,6 +29,32 @@ class MembershipRepository {
 
     }
 
+    async findByUser(userId) {
+
+        return await Membership.find({
+
+            userId,
+
+            status: "ACTIVE",
+
+        })
+
+            .populate("organizationId")
+
+            .populate("roleId");
+
+    }
+
+    async findById(id) {
+
+        return await Membership.findById(id)
+
+            .populate("organizationId")
+
+            .populate("roleId");
+
+    }
+
 }
 
 module.exports = new MembershipRepository();
