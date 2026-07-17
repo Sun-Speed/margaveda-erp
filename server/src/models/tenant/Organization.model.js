@@ -49,6 +49,17 @@ const organizationSchema = new mongoose.Schema(
             default: "",
         },
 
+        website: {
+    type: String,
+    default: "",
+},
+
+principalName: {
+    type: String,
+    default: "",
+},
+
+
         logo: {
             type: String,
             default: "",
@@ -66,8 +77,8 @@ const organizationSchema = new mongoose.Schema(
                 "INACTIVE"
             ],
             default: "ACTIVE",
-        }
-
+        },
+        
     },
     {
         timestamps: true,

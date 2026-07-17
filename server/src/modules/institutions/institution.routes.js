@@ -2,49 +2,80 @@ const express = require("express");
 
 const router = express.Router();
 
+// Existing Institution Controllers
+const {
+    createInstitution,
+    getAllInstitutions,
+    getInstitutionById,
+    updateInstitution,
+    deleteInstitution,
+} = require("./institution.controller");
+
+// Existing Middleware
 const authMiddleware = require("../../middleware/auth.middleware");
-const authorize = require("../../middleware/authorize.middleware");
 
-const ROLES = require("../../constants/roles");
-
-const institutionController = require("./institution.controller");
-
-router.use(authMiddleware);
-
-router.get(
-    "/",
-    authorize(ROLES.SUPER_ADMIN),
-    institutionController.getAllInstitutions
+// ===== Institution Settings Routes =====
+// const generalRoutes = require("./settings/general/general.routes");
+// const brandingRoutes = require("./settings/branding/branding.routes");
+// const addressRoutes = require("./settings/address/address.routes");
+// const academicRoutes = require("./settings/academic/academic.routes");
+// const structureRoutes = require("./settings/structure/structure.routes");
+// const featureRoutes = require("./settings/features/feature.routes");
+const institutionProfileRoutes = require(
+    "./settings/institutionProfile/institutionProfile.routes"
 );
 
-router.get(
-    "/:id",
-    authorize(ROLES.SUPER_ADMIN),
-    institutionController.getInstitutionById
-);
+// -----------------------------------------------------------------------------
+// Institution CRUD
+// -----------------------------------------------------------------------------
 
-router.post(
-    "/",
-    authorize(ROLES.SUPER_ADMIN),
-    institutionController.createInstitution
-);
+router.post("/", authMiddleware, createInstitution);
 
-router.put(
-    "/:id",
-    authorize(ROLES.SUPER_ADMIN),
-    institutionController.updateInstitution
-);
+router.get("/", authMiddleware, getAllInstitutions);
 
-router.patch(
-    "/:id/status",
-    authorize(ROLES.SUPER_ADMIN),
-    institutionController.updateInstitutionStatus
-);
+router.get("/:institutionId", authMiddleware, getInstitutionById);
 
-router.delete(
-    "/:id",
-    authorize(ROLES.SUPER_ADMIN),
-    institutionController.deleteInstitution
+router.put("/:institutionId", authMiddleware, updateInstitution);
+
+router.delete("/:institutionId", authMiddleware, deleteInstitution);
+
+// -----------------------------------------------------------------------------
+// Institution Settings
+// -----------------------------------------------------------------------------
+
+// router.use(
+//     "/:institutionId/settings/general",
+//     generalRoutes
+// );
+
+// router.use(
+//     "/:institutionId/settings/branding",
+//     brandingRoutes
+// );
+
+// router.use(
+//     "/:institutionId/settings/address",
+//     addressRoutes
+// );
+
+// router.use(
+//     "/:institutionId/settings/academic",
+//     academicRoutes
+// );
+
+// router.use(
+//     "/:institutionId/settings/structure",
+//     structureRoutes
+// );
+
+// router.use(
+//     "/:institutionId/settings/features",
+//     featureRoutes
+// );
+
+router.use(
+    "/:institutionId/settings/profile",
+    institutionProfileRoutes
 );
 
 module.exports = router;

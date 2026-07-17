@@ -4,108 +4,148 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import SetupLayout from "@/layouts/SetupLayout";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import InstitutionLayout from "@/layouts/InstitutionLayout";
 
-// Public Pages
+// ================= PUBLIC =================
+
 import WelcomePage from "@/modules/auth/pages/WelcomePage";
 import LoginPage from "@/modules/auth/pages/LoginPage";
 
-// Setup Pages
+// ================= SETUP =================
+
 import OrganizationTypePage from "@/modules/auth/pages/OrganizationTypePage";
 import CustomerInfoPage from "@/modules/auth/pages/CustomerInfoPage";
 import OrganizationInfoPage from "@/modules/auth/pages/OrganizationInfoPage";
 import AdminInfoPage from "@/modules/auth/pages/AdminInfoPage";
 import ReviewPage from "@/modules/auth/pages/ReviewPage";
 
-// Group Dashboard
+// ================= GROUP ERP =================
+
 import DashboardPage from "@/modules/dashboard/pages/DashboardPage";
 
-// Institution Module
 import InstitutionListPage from "@/modules/institutions/pages/InstitutionListPage";
 import AddInstitutionPage from "@/modules/institutions/pages/AddInstitutionPage";
 import EditInstitutionPage from "@/modules/institutions/pages/EditInstitutionPage";
-import InstitutionDashboardPage from "@/modules/institutions/pages/InstitutionDashboardPage";
+
+// ================= MODULE ROUTES =================
+
+import InstitutionRoutes from "@/modules/institutions/routes/institution.routes";
 
 export default function AppRoutes() {
-  return (
-    <Routes>
-      {/* ================= PUBLIC ================= */}
+    return (
+        <Routes>
 
-      <Route path="/" element={<WelcomePage />} />
+            {/* ================= PUBLIC ================= */}
 
-      <Route path="/login" element={<LoginPage />} />
+            <Route
+                path="/"
+                element={<WelcomePage />}
+            />
 
-      {/* ================= SETUP ================= */}
+            <Route
+                path="/login"
+                element={<LoginPage />}
+            />
 
-      <Route element={<SetupLayout />}>
-        <Route path="/setup/type" element={<OrganizationTypePage />} />
+            {/* ================= SETUP ================= */}
 
-        <Route path="/setup/customer" element={<CustomerInfoPage />} />
+            <Route element={<SetupLayout />}>
 
-        <Route path="/setup/organization" element={<OrganizationInfoPage />} />
+                <Route
+                    path="/setup/type"
+                    element={<OrganizationTypePage />}
+                />
 
-        <Route path="/setup/admin" element={<AdminInfoPage />} />
+                <Route
+                    path="/setup/customer"
+                    element={<CustomerInfoPage />}
+                />
 
-        <Route path="/setup/review" element={<ReviewPage />} />
-      </Route>
+                <Route
+                    path="/setup/organization"
+                    element={<OrganizationInfoPage />}
+                />
 
-      {/* ================= PROTECTED ================= */}
+                <Route
+                    path="/setup/admin"
+                    element={<AdminInfoPage />}
+                />
 
-      <Route element={<ProtectedRoute />}>
-        {/* -------- GROUP ERP -------- */}
+                <Route
+                    path="/setup/review"
+                    element={<ReviewPage />}
+                />
 
-        <Route path="/app" element={<DashboardLayout />}>
-          <Route index element={<Navigate to="dashboard" replace />} />
+            </Route>
 
-          <Route path="dashboard" element={<DashboardPage />} />
+            {/* ================= PROTECTED ================= */}
 
-          <Route path="institutions" element={<InstitutionListPage />} />
+            <Route element={<ProtectedRoute />}>
 
-          <Route path="institutions/add" element={<AddInstitutionPage />} />
+                {/* ========= GROUP ERP ========= */}
 
-          <Route
-            path="institutions/edit/:id"
-            element={<EditInstitutionPage />}
-          />
+                <Route
+                    path="/app"
+                    element={<DashboardLayout />}
+                >
 
-          <Route path="users" element={<h1>Users</h1>} />
+                    <Route
+                        index
+                        element={<Navigate to="dashboard" replace />}
+                    />
 
-          <Route path="reports" element={<h1>Reports</h1>} />
+                    <Route
+                        path="dashboard"
+                        element={<DashboardPage />}
+                    />
 
-          <Route path="settings" element={<h1>Settings</h1>} />
-        </Route>
+                    <Route
+                        path="institutions"
+                        element={<InstitutionListPage />}
+                    />
 
-        {/* -------- INSTITUTION ERP -------- */}
+                    <Route
+                        path="institutions/add"
+                        element={<AddInstitutionPage />}
+                    />
 
-        <Route
-          path="/institution/:institutionId"
-          element={<InstitutionLayout />}
-        >
-          <Route index element={<Navigate to="dashboard" replace />} />
+                    <Route
+                        path="institutions/edit/:id"
+                        element={<EditInstitutionPage />}
+                    />
 
-          <Route path="dashboard" element={<InstitutionDashboardPage />} />
+                    <Route
+                        path="users"
+                        element={<h1>Users</h1>}
+                    />
 
-          <Route path="students" element={<h1>Students</h1>} />
+                    <Route
+                        path="reports"
+                        element={<h1>Reports</h1>}
+                    />
 
-          <Route path="teachers" element={<h1>Teachers</h1>} />
+                    <Route
+                        path="settings"
+                        element={<h1>Group Settings</h1>}
+                    />
 
-          <Route path="departments" element={<h1>Departments</h1>} />
+                </Route>
 
-          <Route path="courses" element={<h1>Courses</h1>} />
+                {/* ========= INSTITUTION ERP ========= */}
 
-          <Route path="attendance" element={<h1>Attendance</h1>} />
+                <Route
+                    path="/institution/:institutionId/*"
+                    element={<InstitutionRoutes />}
+                />
 
-          <Route path="fees" element={<h1>Fees</h1>} />
+            </Route>
 
-          <Route path="reports" element={<h1>Reports</h1>} />
+            {/* ================= 404 ================= */}
 
-          <Route path="settings" element={<h1>Settings</h1>} />
-        </Route>
-      </Route>
+            <Route
+                path="*"
+                element={<Navigate to="/" replace />}
+            />
 
-      {/* ================= 404 ================= */}
-
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  );
+        </Routes>
+    );
 }

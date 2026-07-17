@@ -10,6 +10,7 @@ const customerRoutes = require("./routes/customer.routes");
 const setupRoutes = require("./modules/setup/setup.routes");
 const authRoutes = require("./modules/auth/auth.routes");
 const institutionRoutes = require("./modules/institutions/institution.routes");
+// const institutionRoutes = require("./institution/index.js");
 
 const app = express();
 

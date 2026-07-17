@@ -37,13 +37,13 @@ class OrganizationRepository {
     async update(id, data) {
 
         return await Organization.findByIdAndUpdate(
-            id,
-            data,
-            {
-                new: true,
-                runValidators: true,
-            }
-        );
+    id,
+    { $set: data },
+    {
+        returnDocument: "after",
+        runValidators: true,
+    }
+);
 
     }
 
