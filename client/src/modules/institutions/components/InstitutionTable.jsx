@@ -1,144 +1,73 @@
 import { Pencil, Power, Eye, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
-export default function InstitutionTable({ institutions, refresh }) {
-
+export default function InstitutionTable({ institutions }) {
   const navigate = useNavigate();
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full">
-        <thead>
-          <tr className="border-b">
-            <th className="text-left px-5 py-4">Institution</th>
-
-            <th className="text-left px-5 py-4">Type</th>
-
-            <th className="text-left px-5 py-4">Email</th>
-
-            <th className="text-left px-5 py-4">Phone</th>
-
-            <th className="text-left px-5 py-4">Status</th>
-
-            <th className="text-center px-5 py-4">Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {institutions.map((institution) => (
-            <tr
-              key={institution._id}
-              className="border-b hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-            >
-              <td className="px-5 py-4">
-                <div className="flex items-center gap-3">
-                  <div
-                    className="
-                                                w-11
-                                                h-11
-                                                rounded-xl
-                                                bg-blue-100
-                                                flex
-                                                items-center
-                                                justify-center
-                                            "
-                  >
-                    <Building2 size={20} className="text-blue-600" />
-                  </div>
-
-                  <div>
-                    <h3
-    onClick={() =>
-        navigate(`/institution/${institution._id}/dashboard`)
-    }
-    className="
-        font-semibold
-        cursor-pointer
-        hover:text-blue-600
-    "
->
-
-    {institution.name}
-
-</h3>
-
-                    <p className="text-sm text-gray-500">{institution.code}</p>
-                  </div>
-                </div>
-              </td>
-
-              <td className="px-5 py-4">{institution.organizationType}</td>
-
-              <td className="px-5 py-4">{institution.email}</td>
-
-              <td className="px-5 py-4">{institution.phone}</td>
-
-              <td className="px-5 py-4">
-                <span
-                  className={`
-                                            px-3
-                                            py-1
-                                            rounded-full
-                                            text-xs
-                                            font-medium
-
-                                            ${
-                                              institution.status === "ACTIVE"
-                                                ? "bg-green-100 text-green-700"
-                                                : institution.status ===
-                                                    "INACTIVE"
-                                                  ? "bg-yellow-100 text-yellow-700"
-                                                  : "bg-red-100 text-red-700"
-                                            }
-                                        `}
-                >
-                  {institution.status}
-                </span>
-              </td>
-
-              <td className="px-5 py-4">
-                <div className="flex justify-center gap-2">
-                  <button
-
-    onClick={() =>
-    navigate(`/institution/${institution._id}/dashboard`)
-}
-
-    className="p-2 rounded-lg hover:bg-blue-100"
-
->
-
-    <Eye size={18}/>
-
-</button>
-
-                  <button
-                    className="
-                                                p-2
-                                                rounded-lg
-                                                hover:bg-yellow-100
-                                            "
-                    title="Edit"
-                  >
-                    <Pencil size={18} />
-                  </button>
-
-                  <button
-                    className="
-                                                p-2
-                                                rounded-lg
-                                                hover:bg-red-100
-                                            "
-                    title="Status"
-                  >
-                    <Power size={18} />
-                  </button>
-                </div>
-              </td>
+    <div className="w-full bg-[#111111]/40 border border-white/10 rounded-[32px] p-2 backdrop-blur-xl overflow-hidden shadow-2xl">
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="text-gray-400 text-sm uppercase tracking-wider border-b border-white/5">
+              {["Institution", "Type", "Email", "Phone", "Status", "Actions"].map((head) => (
+                <th key={head} className="px-6 py-5 font-medium">{head}</th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {institutions.map((inst) => (
+              <motion.tr 
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                key={inst._id}
+                className="hover:bg-white/5 transition-colors group"
+              >
+                {/* Institution Name & Code */}
+                <td className="px-6 py-4 flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
+                    <Building2 size={18} className="text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 onClick={() => navigate(`/institution/${inst._id}/dashboard`)} 
+                        className="font-semibold cursor-pointer hover:text-blue-400 transition-colors">
+                      {inst.name}
+                    </h3>
+                    <p className="text-xs text-gray-500">{inst.code}</p>
+                  </div>
+                </td>
+
+                <td className="px-6 py-4 text-gray-300">{inst.organizationType}</td>
+                <td className="px-6 py-4 text-gray-300">{inst.email}</td>
+                <td className="px-6 py-4 text-gray-300">{inst.phone}</td>
+                
+                {/* Status Badge */}
+                <td className="px-6 py-4">
+                  <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border 
+                    ${inst.status === "ACTIVE" ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : 
+                      inst.status === "INACTIVE" ? "bg-amber-500/10 text-amber-400 border-amber-500/20" : 
+                      "bg-red-500/10 text-red-400 border-red-500/20"}`}>
+                    {inst.status}
+                  </span>
+                </td>
+
+                {/* Actions */}
+                <td className="px-6 py-4">
+                  <div className="flex gap-2">
+                    {[ { icon: Eye, action: () => navigate(`/institution/${inst._id}/dashboard`), color: "hover:text-blue-400" },
+                       { icon: Pencil, action: () => {}, color: "hover:text-amber-400" },
+                       { icon: Power, action: () => {}, color: "hover:text-red-400" } ].map((btn, i) => (
+                      <button key={i} onClick={btn.action} className={`p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-all ${btn.color}`}>
+                        <btn.icon size={16} />
+                      </button>
+                    ))}
+                  </div>
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -4,18 +4,18 @@ import AppRoutes from "@/routes/AppRoutes";
 
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SetupProvider } from "@/contexts/SetupContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+// import { ThemeProvider } from "@/contexts/ThemeContext";
 
 function App() {
     return (
         <BrowserRouter>
-            <ThemeProvider>
+            {/* <ThemeProvider> */}
                 <AuthProvider>
                     <SetupProvider>
                         <AppRoutes />
                     </SetupProvider>
                 </AuthProvider>
-            </ThemeProvider>
+            {/* </ThemeProvider> */}
         </BrowserRouter>
     );
 }

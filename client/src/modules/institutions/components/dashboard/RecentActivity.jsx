@@ -1,77 +1,44 @@
 import { UserPlus, Building2, BookOpen, GraduationCap } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function RecentActivity() {
   const activities = [
-    {
-      icon: UserPlus,
-      title: "No teachers added yet.",
-    },
-
-    {
-      icon: GraduationCap,
-      title: "No students registered.",
-    },
-
-    {
-      icon: Building2,
-      title: "No departments created.",
-    },
-
-    {
-      icon: BookOpen,
-      title: "No courses available.",
-    },
+    { icon: UserPlus, title: "System Initialized", color: "text-blue-400" },
+    { icon: GraduationCap, title: "Waitlist Enabled", color: "text-emerald-400" },
+    { icon: Building2, title: "Institution Onboarded", color: "text-purple-400" },
+    { icon: BookOpen, title: "Module Structure Ready", color: "text-amber-400" },
   ];
 
   return (
-    <div
-      className="
-                bg-white
-                dark:bg-gray-800
-                rounded-2xl
-                border
-                dark:border-gray-700
-                shadow-sm
-                p-6
-            "
-    >
-      <div className="mb-6">
-        <h2 className="text-xl font-bold">Recent Activity</h2>
-
-        <p className="text-gray-500 text-sm mt-1">
-          Latest updates in this institution.
-        </p>
+    <div className="bg-[#111111]/60 backdrop-blur-xl border border-white/10 rounded-[32px] p-8 shadow-2xl h-full">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-white">System Activity</h2>
+        <p className="text-gray-400 text-sm mt-1">Real-time status updates.</p>
       </div>
 
-      <div className="space-y-5">
-        {activities.map((activity, index) => {
-          const Icon = activity.icon;
+      <div className="space-y-8 relative">
+        {/* Timeline Line */}
+        <div className="absolute left-[19px] top-2 bottom-2 w-[1px] bg-white/10" />
 
-          return (
-            <div key={index} className="flex items-center gap-4">
-              <div
-                className="
-                                        w-10
-                                        h-10
-                                        rounded-full
-                                        bg-gray-100
-                                        dark:bg-gray-700
-                                        flex
-                                        items-center
-                                        justify-center
-                                    "
-              >
-                <Icon size={18} />
-              </div>
-
-              <div>
-                <p className="font-medium">{activity.title}</p>
-
-                <span className="text-xs text-gray-400">Just now</span>
-              </div>
+        {activities.map((act, i) => (
+          <motion.div 
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.1 }}
+            key={i} 
+            className="flex items-center gap-6 relative"
+          >
+            {/* Timeline Dot */}
+            <div className={`w-10 h-10 rounded-full bg-[#1A1A1A] border border-white/10 flex items-center justify-center z-10 ${act.color}`}>
+              <act.icon size={18} />
             </div>
-          );
-        })}
+
+            <div>
+              <p className="font-medium text-white">{act.title}</p>
+              <span className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Just now</span>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   );

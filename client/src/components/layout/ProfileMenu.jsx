@@ -1,16 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { User, KeyRound, LogOut, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function ProfileMenu() {
   const navigate = useNavigate();
-
   const { user, logout } = useAuth();
-
   const [open, setOpen] = useState(false);
-
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -19,17 +15,12 @@ export default function ProfileMenu() {
         setOpen(false);
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   function handleLogout() {
     logout();
-
     navigate("/login", { replace: true });
   }
 
@@ -37,120 +28,46 @@ export default function ProfileMenu() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setOpen(!open)}
-        className="
-                    flex
-                    items-center
-                    gap-3
-                    px-3
-                    py-2
-                    rounded-xl
-                    hover:bg-gray-100
-                    dark:hover:bg-gray-700
-                    transition
-                "
+        className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors"
       >
-        <div
-          className="
-                        w-10
-                        h-10
-                        rounded-full
-                        bg-blue-600
-                        text-white
-                        flex
-                        items-center
-                        justify-center
-                        font-semibold
-                    "
-        >
+        <div className="w-9 h-9 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-semibold text-sm border border-indigo-500/30">
           {user?.firstName?.charAt(0).toUpperCase()}
         </div>
-
-        <div className="text-left">
-          <p className="font-medium">{user?.firstName}</p>
-
-          <p className="text-xs text-gray-500">Administrator</p>
+        <div className="text-left hidden md:block">
+          <p className="font-medium text-sm text-white/90">{user?.firstName}</p>
+          <p className="text-[10px] text-white/40 uppercase tracking-wider">Admin</p>
         </div>
-
-        <ChevronDown size={18} />
+        <ChevronDown size={14} className="text-white/40" />
       </button>
 
       {open && (
-        <div
-          className="
-                            absolute
-                            right-0
-                            mt-3
-                            w-64
-                            rounded-2xl
-                            border
-                            bg-white
-                            dark:bg-gray-800
-                            shadow-xl
-                            overflow-hidden
-                            z-50
-                        "
-        >
-          <div className="p-4 border-b">
-            <h3 className="font-semibold">
-              {user?.firstName} {user?.lastName}
-            </h3>
+  <div 
+    className="absolute right-0 mt-2 w-64 bg-[#121212] border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200"
+  >
+    <div className="p-4 border-b border-white/5">
+      <h3 className="font-semibold text-white/90">{user?.firstName} {user?.lastName}</h3>
+      <p className="text-xs text-white/40">{user?.email}</p>
+    </div>
 
-            <p className="text-sm text-gray-500">{user?.email}</p>
-          </div>
-
-          <button
-            className="
-                                w-full
-                                flex
-                                items-center
-                                gap-3
-                                px-4
-                                py-3
-                                hover:bg-gray-100
-                                dark:hover:bg-gray-700
-                            "
-          >
-            <User size={18} />
-            My Profile
-          </button>
-
-          <button
-            className="
-                                w-full
-                                flex
-                                items-center
-                                gap-3
-                                px-4
-                                py-3
-                                hover:bg-gray-100
-                                dark:hover:bg-gray-700
-                            "
-          >
-            <KeyRound size={18} />
-            Change Password
-          </button>
-
-          <hr />
-
-          <button
-            onClick={handleLogout}
-            className="
-                                w-full
-                                flex
-                                items-center
-                                gap-3
-                                px-4
-                                py-3
-                                text-red-600
-                                hover:bg-red-50
-                                dark:hover:bg-red-900/20
-                            "
-          >
-            <LogOut size={18} />
-            Logout
-          </button>
-        </div>
-      )}
+    <div className="p-1">
+      <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-white/70 hover:bg-white/5 rounded-lg transition-colors">
+        <User size={16} /> My Profile
+      </button>
+      <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-white/70 hover:bg-white/5 rounded-lg transition-colors">
+        <KeyRound size={16} /> Change Password
+      </button>
+      
+      <div className="h-[1px] bg-white/5 my-1" />
+      
+      <button
+        onClick={handleLogout}
+        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+      >
+        <LogOut size={16} /> Logout
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 }

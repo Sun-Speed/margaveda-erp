@@ -1,141 +1,81 @@
 import { useNavigate } from "react-router-dom";
-
+import { motion, AnimatePresence } from "framer-motion";
 import { useSetup } from "@/contexts/SetupContext";
-
-import Button from "@/components/ui/Button";
-import Card from "@/components/ui/Card";
-import Input from "@/components/ui/Input";
 
 export default function FounderInfoPage() {
   const navigate = useNavigate();
-
   const { setupData, updateSection } = useSetup();
-
   const admin = setupData.admin;
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    updateSection("admin", {
-      [name]: value,
-    });
-  };
-
-  const validate = () => {
-    if (
-      !admin.firstName ||
-      !admin.email ||
-      !admin.phone ||
-      !admin.password
-    ) {
-      alert("Please fill all required fields.");
-
-      return false;
-    }
-
-    if (admin.password.length < 8) {
-      alert("Password must be at least 8 characters.");
-
-      return false;
-    }
-
-    if (admin.password !== admin.confirmPassword) {
-      alert("Passwords do not match.");
-
-      return false;
-    }
-
-    return true;
+    updateSection("admin", { [e.target.name]: e.target.value });
   };
 
   const next = () => {
-    if (!validate()) return;
-
+    if (!admin.firstName || !admin.email || !admin.phone || !admin.password) {
+      alert("Please fill all required fields.");
+      return;
+    }
+    if (admin.password.length < 8) {
+      alert("Password must be at least 8 characters.");
+      return;
+    }
+    if (admin.password !== admin.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
     navigate("/setup/review");
   };
 
   return (
-    <div className="flex justify-center">
-      <Card className="w-full max-w-3xl">
-        <h2 className="text-3xl font-bold">Founder Information</h2>
-
-        <p className="text-gray-500 mt-2">
-          Create the first account that will manage your ERP.
-        </p>
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-6"
+    >
+      <div className="w-full max-w-3xl bg-[#111111]/80 border border-white/10 backdrop-blur-xl p-10 rounded-[32px] shadow-2xl">
+        <h2 className="text-3xl font-bold text-white">Founder Information</h2>
+        <p className="text-gray-400 mt-2">Create the first account that will manage your ERP.</p>
 
         <div className="grid md:grid-cols-2 gap-6 mt-8">
-          <Input
-            label="First Name"
-            name="firstName"
-            value={admin.firstName}
-            onChange={handleChange}
-            required
-          />
-
-          <Input
-            label="Last Name"
-            name="lastName"
-            value={admin.lastName}
-            onChange={handleChange}
-          />
-
-          <Input
-            label="Email"
-            type="email"
-            name="email"
-            value={admin.email}
-            onChange={handleChange}
-            required
-          />
-
-          <Input
-            label="Phone"
-            name="phone"
-            value={admin.phone}
-            onChange={handleChange}
-            required
-          />
-
-          <Input
-            label="Password"
-            type="password"
-            name="password"
-            value={admin.password}
-            onChange={handleChange}
-            required
-          />
-
-          <Input
-            label="Confirm Password"
-            type="password"
-            name="confirmPassword"
-            value={admin.confirmPassword}
-            onChange={handleChange}
-            required
-          />
+          {["firstName", "lastName", "email", "phone", "password", "confirmPassword"].map((field) => (
+            <div key={field} className={field === "confirmPassword" || field === "password" ? "" : ""}>
+              <label className="block text-sm text-gray-400 mb-2 capitalize">{field.replace(/([A-Z])/g, ' $1')}</label>
+              <input
+                type={field.includes("password") ? "password" : "text"}
+                name={field}
+                value={admin[field] || ""}
+                onChange={handleChange}
+                className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none transition-colors"
+              />
+            </div>
+          ))}
         </div>
 
-        {admin.confirmPassword && (
-          <div className="mt-4">
-            {admin.password === admin.confirmPassword ? (
-              <p className="text-green-600">✓ Passwords match</p>
-            ) : (
-              <p className="text-red-600">✗ Passwords do not match</p>
-            )}
-          </div>
-        )}
+        <AnimatePresence>
+          {admin.confirmPassword && (
+            <motion.p 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className={`mt-4 text-sm ${admin.password === admin.confirmPassword ? "text-green-500" : "text-red-500"}`}
+            >
+              {admin.password === admin.confirmPassword ? "✓ Passwords match" : "✗ Passwords do not match"}
+            </motion.p>
+          )}
+        </AnimatePresence>
 
         <div className="flex justify-between mt-10">
-          <Button
-            variant="secondary"
-            onClick={() => navigate("/setup/organization")}
+          <button onClick={() => navigate("/setup/organization")} className="text-gray-400 hover:text-white transition-colors">Previous</button>
+          <motion.button 
+            whileHover={{ scale: 1.02 }} 
+            whileTap={{ scale: 0.98 }} 
+            onClick={next} 
+            className="px-8 py-3 bg-white text-black font-semibold rounded-xl"
           >
-            Previous
-          </Button>
-
-          <Button onClick={next}>Continue</Button>
+            Continue
+          </motion.button>
         </div>
-      </Card>
-    </div>
+      </div>
+    </motion.div>
   );
 }

@@ -1,5 +1,5 @@
 import { NavLink, useParams } from "react-router-dom";
-
+import { motion } from "framer-motion";
 import institutionMenu from "@/menus/institution.menu";
 import { useInstitution } from "@/contexts/InstitutionContext";
 
@@ -8,60 +8,44 @@ export default function InstitutionSidebar() {
   const { institution } = useInstitution();
 
   return (
-    <aside className="w-72 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
-      <div className="h-[72px] flex items-center px-6 border-b">
-        <div className="h-[72px] px-6 border-b flex flex-col justify-center">
-
-    <h2 className="font-bold text-lg">
-
-        {
-
-            institution?.name ||
-
-            "Institution"
-
-        }
-
-    </h2>
-
-    <p className="text-xs text-gray-500">
-
-        {
-
-            institution?.type
-
-        }
-
-    </p>
-
-</div>
+    <aside className="w-72 h-screen bg-[#0A0A0A] border-r border-white/5 flex flex-col">
+      {/* Brand Header */}
+      <div className="h-[80px] flex flex-col justify-center px-8 border-b border-white/5">
+        <h2 className="font-bold text-white tracking-tight">
+          {institution?.name || "Institution"}
+        </h2>
+        <p className="text-[10px] text-blue-400 uppercase tracking-widest mt-0.5">
+          {institution?.type?.replace("_", " ") || "Management"}
+        </p>
       </div>
 
-      <nav className="flex-1 p-4 space-y-2">
+      {/* Navigation */}
+      <nav className="flex-1 p-6 space-y-2">
         {institutionMenu.map((item) => {
           const Icon = item.icon;
-
           return (
             <NavLink
               key={item.path}
               to={`/app/institutions/${institutionId}/${item.path}`}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl transition
-
-                                    ${
-                                      isActive
-                                        ? "bg-blue-600 text-white"
-                                        : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    }`
+                `flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 ${
+                  isActive
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-900/20"
+                    : "text-gray-400 hover:bg-white/5 hover:text-white"
+                }`
               }
             >
               <Icon size={20} />
-
-              <span>{item.title}</span>
+              <span className="font-medium tracking-wide">{item.title}</span>
             </NavLink>
           );
         })}
       </nav>
+      
+      {/* Footer Branding or Version */}
+      <div className="p-6 border-t border-white/5">
+        <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">MargaVeda v1.0</p>
+      </div>
     </aside>
   );
 }

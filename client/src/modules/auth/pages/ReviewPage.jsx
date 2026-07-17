@@ -1,29 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { motion } from "framer-motion";
 import { useSetup } from "@/contexts/SetupContext";
-
-import Button from "@/components/ui/Button";
-import Card from "@/components/ui/Card";
-
 import { createERP } from "../services/setup.service";
 
 export default function ReviewPage() {
   const navigate = useNavigate();
-
   const { setupData } = useSetup();
-
   const [loading, setLoading] = useState(false);
 
   const submit = async () => {
     try {
       setLoading(true);
-
       const payload = {
         customer: setupData.customer,
-
         organization: setupData.organization,
-
         admin: {
           firstName: setupData.admin.firstName,
           lastName: setupData.admin.lastName,
@@ -32,14 +23,8 @@ export default function ReviewPage() {
           password: setupData.admin.password,
         },
       };
-
       const response = await createERP(payload);
-
       alert(response.message);
-
-      console.log(response);
-
-      // Login page later
     } catch (error) {
       alert(error?.response?.data?.message || "ERP Creation Failed");
     } finally {
@@ -48,63 +33,45 @@ export default function ReviewPage() {
   };
 
   return (
-    <div className="flex justify-center">
-      <Card className="w-full max-w-3xl">
-        <h2 className="text-3xl font-bold">Review</h2>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-6"
+    >
+      <div className="w-full max-w-3xl bg-[#111111]/80 border border-white/10 backdrop-blur-xl p-10 rounded-[32px] shadow-2xl">
+        <h2 className="text-3xl font-bold text-white">Review Details</h2>
+        <p className="text-gray-400 mt-2">Verify everything before creating your MargaVeda ERP.</p>
 
-        <p className="text-gray-500 mt-2">
-          Verify everything before creating your ERP.
-        </p>
-
-        <div className="mt-8 space-y-8">
-          <div>
-            <h3 className="font-bold text-xl">Customer</h3>
-
-            <p>Name : {setupData.customer.name}</p>
-
-            <p>Type : {setupData.customer.type}</p>
-
-            <p>Email : {setupData.customer.email}</p>
-
-            <p>Phone : {setupData.customer.phone}</p>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-xl">Organization</h3>
-
-            <p>Name : {setupData.organization.name}</p>
-
-            <p>Type : {setupData.organization.type}</p>
-
-            <p>Code : {setupData.organization.code}</p>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-xl">Founder</h3>
-
-            <p>
-              {setupData.admin.firstName} {setupData.admin.lastName}
-            </p>
-
-            <p>{setupData.admin.email}</p>
-
-            <p>{setupData.admin.phone}</p>
-          </div>
+        <div className="mt-8 grid md:grid-cols-3 gap-8 text-sm">
+          {[
+            { title: "Customer", data: setupData.customer },
+            { title: "Organization", data: setupData.organization },
+            { title: "Founder", data: setupData.admin }
+          ].map((section) => (
+            <div key={section.title} className="bg-[#1A1A1A] p-6 rounded-2xl border border-white/5">
+              <h3 className="font-bold text-white mb-4 text-lg">{section.title}</h3>
+              <div className="space-y-2 text-gray-400">
+                {Object.entries(section.data).slice(0, 3).map(([key, value]) => (
+                  <p key={key}><span className="capitalize">{key}</span>: {value}</p>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="flex justify-between mt-10">
-          <Button
-            variant="secondary"
-            onClick={() => navigate("/setup/founder")}
+          <button onClick={() => navigate("/setup/admin")} className="text-gray-400 hover:text-white transition-colors">Previous</button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={submit}
+            disabled={loading}
+            className="px-8 py-3 bg-white text-black font-semibold rounded-xl hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all"
           >
-            Previous
-          </Button>
-
-          <Button onClick={submit} disabled={loading}>
-            {loading ? "Creating ERP..." : "Create ERP"}
-          </Button>
+            {loading ? "Creating..." : "Create ERP"}
+          </motion.button>
         </div>
-      </Card>
-    </div>
+      </div>
+    </motion.div>
   );
 }
