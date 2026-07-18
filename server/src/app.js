@@ -11,6 +11,8 @@ const setupRoutes = require("./modules/setup/setup.routes");
 const authRoutes = require("./modules/auth/auth.routes");
 const institutionRoutes = require("./modules/institutions/institution.routes");
 // const institutionRoutes = require("./institution/index.js");
+const path = require("path");
+const fs = require("fs");
 
 const app = express();
 
@@ -27,7 +29,13 @@ app.use(
     })
 );
 
-app.use(helmet());
+app.use(
+    helmet({
+        crossOriginResourcePolicy: {
+            policy: "cross-origin",
+        },
+    })
+);
 
 app.use(compression());
 
@@ -39,7 +47,6 @@ app.use(cookieParser());
 
 app.use(morgan("dev"));
 
-app.use(errorHandler);
 
 app.use("/api/test", testRoutes);
 
@@ -52,6 +59,13 @@ app.use("/api/auth", authRoutes);
 app.use(
     "/api/institutions",
     institutionRoutes
+);
+
+app.use(
+    "/uploads",
+    express.static(
+        path.join(process.cwd(), "uploads")
+    )
 );
 
 /*
@@ -67,5 +81,7 @@ app.get("/api/health", (req, res) => {
         timestamp: new Date().toISOString(),
     });
 });
+
+app.use(errorHandler);
 
 module.exports = app;

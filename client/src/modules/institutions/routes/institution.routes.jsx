@@ -7,56 +7,53 @@ import InstitutionDashboardPage from "../pages/InstitutionDashboardPage";
 
 import InstitutionSettingsPage from "../../institution-settings/pages/InstitutionSettingsPage";
 import ProfileSettingsPage from "../../institution-settings/pages/ProfileSettingsPage";
+import IdentityPage from "@/modules/institution-settings/identity/pages/IdentityPage";
+import AddressPage from "@/modules/institution-settings/address/pages/AddressPage";
+import AcademicPage from "../../institution-settings/academic/pages/AcademicPage";
+import GeneralPage from "../../institution-settings/general/pages/GeneralPage";
+import SystemPage from "../../institution-settings/system/pages/SystemPage";
+
 
 export default function InstitutionRoutes() {
-    return (
-        <Routes>
+  return (
+    <Routes>
+      <Route element={<InstitutionLayout />}>
+        <Route index element={<Navigate to="dashboard" replace />} />
 
-            <Route element={<InstitutionLayout />}>
+        <Route path="dashboard" element={<InstitutionDashboardPage />} />
 
-                <Route
-                    index
-                    element={<Navigate to="dashboard" replace />}
-                />
+        {/* Students */}
 
-                <Route
-                    path="dashboard"
-                    element={<InstitutionDashboardPage />}
-                />
+        {/* <Route path="students" element={<StudentListPage />} /> */}
 
-                {/* Students */}
+        {/* Teachers */}
 
-                {/* <Route path="students" element={<StudentListPage />} /> */}
+        {/* Departments */}
 
-                {/* Teachers */}
+        {/* Courses */}
 
-                {/* Departments */}
+        {/* Attendance */}
 
-                {/* Courses */}
+        {/* Fees */}
 
-                {/* Attendance */}
+        {/* Reports */}
 
-                {/* Fees */}
+        <Route path="settings" element={<InstitutionSettingsPage />}>
+          <Route index element={<Navigate to="profile" replace />} />
 
-                {/* Reports */}
+          <Route path="profile" element={<ProfileSettingsPage />} />
 
-                <Route
-                    path="settings"
-                    element={<InstitutionSettingsPage />}
-                >
-                    <Route
-                        index
-                        element={<Navigate to="profile" replace />}
-                    />
+          <Route path="identity" element={<IdentityPage />} />
 
-                    <Route
-                        path="profile"
-                        element={<ProfileSettingsPage />}
-                    />
-                </Route>
+          <Route path="address" element={<AddressPage />} />
 
-            </Route>
+          <Route path="academic" element={<AcademicPage />} />
 
-        </Routes>
-    );
+          <Route path="general" element={<GeneralPage />} />
+
+          <Route path="system" element={<SystemPage />} />
+        </Route>
+      </Route>
+    </Routes>
+  );
 }

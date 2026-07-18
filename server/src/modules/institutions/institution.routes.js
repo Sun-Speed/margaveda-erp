@@ -15,15 +15,12 @@ const {
 const authMiddleware = require("../../middleware/auth.middleware");
 
 // ===== Institution Settings Routes =====
-// const generalRoutes = require("./settings/general/general.routes");
-// const brandingRoutes = require("./settings/branding/branding.routes");
-// const addressRoutes = require("./settings/address/address.routes");
-// const academicRoutes = require("./settings/academic/academic.routes");
-// const structureRoutes = require("./settings/structure/structure.routes");
-// const featureRoutes = require("./settings/features/feature.routes");
-const institutionProfileRoutes = require(
-    "./settings/institutionProfile/institutionProfile.routes"
-);
+const academicRoutes = require("./settings/academic/academic.routes");
+const institutionProfileRoutes = require("./settings/institutionProfile/institutionProfile.routes");
+const identityRoutes = require("./settings/identity/identity.routes");
+const addressRoutes = require("./settings/address");
+const generalRoutes = require("./settings/general")
+const systemRoutes = require("./settings/system")
 
 // -----------------------------------------------------------------------------
 // Institution CRUD
@@ -43,39 +40,34 @@ router.delete("/:institutionId", authMiddleware, deleteInstitution);
 // Institution Settings
 // -----------------------------------------------------------------------------
 
-// router.use(
-//     "/:institutionId/settings/general",
-//     generalRoutes
-// );
+router.use(
+    "/:institutionId/settings/academic",
+    academicRoutes
+);
 
-// router.use(
-//     "/:institutionId/settings/branding",
-//     brandingRoutes
-// );
+router.use(
+    "/:institutionId/settings/general",
+    generalRoutes
+);
 
-// router.use(
-//     "/:institutionId/settings/address",
-//     addressRoutes
-// );
-
-// router.use(
-//     "/:institutionId/settings/academic",
-//     academicRoutes
-// );
-
-// router.use(
-//     "/:institutionId/settings/structure",
-//     structureRoutes
-// );
-
-// router.use(
-//     "/:institutionId/settings/features",
-//     featureRoutes
-// );
+router.use(
+    "/:institutionId/settings/system",
+    systemRoutes
+);
 
 router.use(
     "/:institutionId/settings/profile",
     institutionProfileRoutes
+);
+
+router.use(
+    "/:institutionId/settings/identity",
+    identityRoutes
+);
+
+router.use(
+    "/:institutionId/settings/address",
+    addressRoutes
 );
 
 module.exports = router;

@@ -7,7 +7,7 @@ const SettingsSidebar = () => {
 
   const menus = [
     { name: "Profile", icon: User, path: "profile" },
-    { name: "Branding", icon: Palette, path: "branding" },
+    { name: "Branding", icon: Palette, path: "identity" },
     { name: "Address", icon: MapPin, path: "address" },
     { name: "Academic", icon: GraduationCap, path: "academic" },
     { name: "Structure", icon: Building2, path: "structure" },

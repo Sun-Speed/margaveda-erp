@@ -7,19 +7,14 @@ import {
   updateInstitutionProfile,
 } from "../services/institutionProfile.service";
 
-import {
-  updateInstitution,
-} from "../../institutions/services/institution.service";
+import { updateInstitution } from "../../institutions/services/institution.service";
 import SettingsCard from "../components/SettingsCard";
 
 const ProfileSettingsPage = () => {
-
-
   const { institutionId } = useInstitution();
 
-const [loading, setLoading] = useState(true);
-const [saving, setSaving] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const [form, setForm] = useState({
     // Institution Details
@@ -41,46 +36,45 @@ const [saving, setSaving] = useState(false);
     description: "",
   });
 
-
   useEffect(() => {
-  if (institutionId) {
-    loadProfile();
-  }
-}, [institutionId]);
+    if (institutionId) {
+      loadProfile();
+    }
+  }, [institutionId]);
 
-const loadProfile = async () => {
-  try {
-    setLoading(true);
+  const loadProfile = async () => {
+    try {
+      setLoading(true);
 
-    const response = await getInstitutionProfile(institutionId);
+      const response = await getInstitutionProfile(institutionId);
 
-    console.log("my data", response);
+      console.log("my data", response);
 
-    const { organization, profile } = response.data;
+      const { organization, profile } = response.data;
 
-    setForm({
-      name: organization?.name || "",
-      code: organization?.code || "",
-      email: organization?.email || "",
-      phone: organization?.phone || "",
-      website: organization?.website || "",
-      principalName: organization?.principalName || "",
-      type: organization?.type || "",
-      establishedYear: organization?.establishedYear || "",
-      address: organization?.address || "",
+      setForm({
+        name: organization?.name || "",
+        code: organization?.code || "",
+        email: organization?.email || "",
+        phone: organization?.phone || "",
+        website: organization?.website || "",
+        principalName: organization?.principalName || "",
+        type: organization?.type || "",
+        establishedYear: organization?.establishedYear || "",
+        address: organization?.address || "",
 
-      shortName: profile?.shortName || "",
-      registrationNumber: profile?.registrationNumber || "",
-      affiliatedUniversity: profile?.affiliatedUniversity || "",
-      accreditation: profile?.accreditation || "",
-      description: profile?.description || "",
-    });
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setLoading(false);
-  }
-};
+        shortName: profile?.shortName || "",
+        registrationNumber: profile?.registrationNumber || "",
+        affiliatedUniversity: profile?.affiliatedUniversity || "",
+        accreditation: profile?.accreditation || "",
+        description: profile?.description || "",
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,55 +86,50 @@ const loadProfile = async () => {
   };
 
   const handleSave = async () => {
-  try {
-    setSaving(true);
+    try {
+      setSaving(true);
 
-    const organizationData = {
-      name: form.name,
-      code: form.code,
-      email: form.email,
-      phone: form.phone,
-      website: form.website,
-      principalName: form.principalName,
-      type: form.type,
-      establishedYear: form.establishedYear,
-      address: form.address,
-    };
+      const organizationData = {
+        name: form.name,
+        code: form.code,
+        email: form.email,
+        phone: form.phone,
+        website: form.website,
+        principalName: form.principalName,
+        type: form.type,
+        establishedYear: form.establishedYear,
+        address: form.address,
+      };
 
-    const profileData = {
-      shortName: form.shortName,
-      registrationNumber: form.registrationNumber,
-      affiliatedUniversity: form.affiliatedUniversity,
-      accreditation: form.accreditation,
-      description: form.description,
-    };
+      const profileData = {
+        shortName: form.shortName,
+        registrationNumber: form.registrationNumber,
+        affiliatedUniversity: form.affiliatedUniversity,
+        accreditation: form.accreditation,
+        description: form.description,
+      };
 
-    await Promise.all([
-      updateInstitution(institutionId, organizationData),
-      updateInstitutionProfile(institutionId, profileData),
-    ]);
+      await Promise.all([
+        updateInstitution(institutionId, organizationData),
+        updateInstitutionProfile(institutionId, profileData),
+      ]);
 
-    alert("Institution profile updated successfully.");
-  } catch (error) {
-    console.error(error);
-    alert("Failed to update institution profile.");
-  } finally {
-    setSaving(false);
+      alert("Institution profile updated successfully.");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update institution profile.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <SettingsCard title="Institution Profile" description="Loading...">
+        <div className="py-12 text-center">Loading institution profile...</div>
+      </SettingsCard>
+    );
   }
-};
-
-if (loading) {
-  return (
-    <SettingsCard
-      title="Institution Profile"
-      description="Loading..."
-    >
-      <div className="py-12 text-center">
-        Loading institution profile...
-      </div>
-    </SettingsCard>
-  );
-}
 
   return (
     <SettingsCard

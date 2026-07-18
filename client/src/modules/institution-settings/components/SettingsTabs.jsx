@@ -16,7 +16,7 @@ const tabs = [
   },
   {
     title: "Branding",
-    path: "branding",
+    path: "identity",
     icon: Palette,
   },
   {
@@ -30,13 +30,13 @@ const tabs = [
     icon: GraduationCap,
   },
   {
-    title: "Structure",
-    path: "structure",
+    title: "General",
+    path: "general",
     icon: Building2,
   },
   {
-    title: "Features",
-    path: "features",
+    title: "System",
+    path: "system",
     icon: Settings,
   },
 ];
