@@ -9,18 +9,18 @@ export default function InstitutionSidebar() {
 
   return (
     <aside className="w-72 h-screen bg-[#0A0A0A] border-r border-white/5 flex flex-col">
-      {/* Brand Header */}
-      <div className="h-[80px] flex flex-col justify-center px-8 border-b border-white/5">
-        <h2 className="font-bold text-white tracking-tight">
+      {/* Sidebar Header */}
+      <div className="h-[72px] flex flex-col justify-center px-6 border-b border-white/5">
+        <h2 className="text-base font-bold text-white tracking-tight truncate">
           {institution?.name || "Institution"}
         </h2>
-        <p className="text-[10px] text-blue-400 uppercase tracking-widest mt-0.5">
+        <p className="text-[10px] text-white/40 uppercase tracking-widest mt-0.5">
           {institution?.type?.replace("_", " ") || "Management"}
         </p>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 p-6 space-y-2">
+      {/* Navigation Area */}
+      <nav className="flex-1 p-4 space-y-1">
         {institutionMenu.map((item) => {
           const Icon = item.icon;
           return (
@@ -28,23 +28,25 @@ export default function InstitutionSidebar() {
               key={item.path}
               to={`/institution/${institutionId}/${item.path}`}
               className={({ isActive }) =>
-                `flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 ${
+                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
                   isActive
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-900/20"
-                    : "text-gray-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                    : "text-white/40 hover:text-white/80 hover:bg-white/5"
                 }`
               }
             >
-              <Icon size={20} />
-              <span className="font-medium tracking-wide">{item.title}</span>
+              <Icon size={18} />
+              <span>{item.title}</span>
             </NavLink>
           );
         })}
       </nav>
-      
-      {/* Footer Branding or Version */}
+
+      {/* Sidebar Footer */}
       <div className="p-6 border-t border-white/5">
-        <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">MargaVeda v1.0</p>
+        <p className="text-[10px] text-white/20 uppercase tracking-widest font-semibold">
+          MargaVeda v1.0
+        </p>
       </div>
     </aside>
   );
