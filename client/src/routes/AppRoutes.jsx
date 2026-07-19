@@ -20,11 +20,12 @@ import ReviewPage from "@/modules/auth/pages/ReviewPage";
 
 // ================= GROUP ERP =================
 
-import DashboardPage from "@/modules/dashboard/pages/DashboardPage";
+import DashboardPage from "@/modules/groups/dashboard/pages/DashboardPage";
+// import DashboardPage from "../modules/groups/dashboard/pages/DashboardPage";
 
-import InstitutionListPage from "@/modules/institutions/pages/InstitutionListPage";
-import AddInstitutionPage from "@/modules/institutions/pages/AddInstitutionPage";
-import EditInstitutionPage from "@/modules/institutions/pages/EditInstitutionPage";
+import InstitutionListPage from "@/modules/groups/Institutions/pages/InstitutionListPage";
+import AddInstitutionPage from "@/modules/groups/Institutions/pages/AddInstitutionPage";
+import EditInstitutionPage from "@/modules/groups/Institutions/pages/EditInstitutionPage";
 
 // ================= MODULE ROUTES =================
 

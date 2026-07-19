@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
 
-import { getInstitutionById } from "@/modules/institutions/services/institution.service";
+import { getInstitutionById } from "@/modules/groups/Institutions/services/institution.service";
 
 const InstitutionContext = createContext();
 

@@ -19,6 +19,12 @@ const institutionMenu = [
     },
 
     {
+        title: "Academics",
+        path: "academics",
+        icon: GraduationCap,
+    },
+
+    {
         title: "Students",
         path: "students",
         icon: GraduationCap,
