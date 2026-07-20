@@ -1,4 +1,4 @@
-const Organization = require("../../../../models/tenant/Organization.model");
+const Organization = require("../../../../models/tenant/Institution.model");
 const InstitutionAddress = require("./address.model");
 
 const getAddress = async (organizationId) => {

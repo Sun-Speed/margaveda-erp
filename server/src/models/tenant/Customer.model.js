@@ -2,12 +2,14 @@ const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema(
     {
+        // Management / Education Group Name
         name: {
             type: String,
             required: true,
             trim: true,
         },
 
+        // Unique URL Slug
         slug: {
             type: String,
             required: true,
@@ -16,24 +18,21 @@ const customerSchema = new mongoose.Schema(
             trim: true,
         },
 
-        type: {
-            type: String,
-            enum: ["SINGLE", "GROUP"],
-            required: true,
-        },
-
+        // Account Status
         status: {
             type: String,
             enum: ["ACTIVE", "INACTIVE", "SUSPENDED"],
             default: "ACTIVE",
         },
 
+        // Subscription Plan
         subscription: {
             type: String,
             enum: ["FREE", "STANDARD", "PRO", "ENTERPRISE"],
             default: "FREE",
         },
 
+        // Branding
         logo: {
             type: String,
             default: "",
@@ -44,6 +43,7 @@ const customerSchema = new mongoose.Schema(
             default: "",
         },
 
+        // Contact Details
         email: {
             type: String,
             required: true,
@@ -57,6 +57,7 @@ const customerSchema = new mongoose.Schema(
             trim: true,
         },
 
+        // Regional Settings
         country: {
             type: String,
             default: "India",

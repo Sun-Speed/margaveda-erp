@@ -8,71 +8,110 @@ const membershipRepository = require("../../repositories/membership.repository")
 
 const roleSeederService = require("../../services/roleSeeder.service");
 
+// const institutionBlueprints = require("../../config/institutionBlueprints");
+
+const institutionBlueprints = require("../institutions/config/institutionBlueprints");
+
 class SetupService {
     async setup(data) {
         const session = await mongoose.startSession();
 
         try {
-            session.startTransaction();
+            await session.startTransaction();
 
-            // Check Customer Slug
+            // -----------------------------
+            // Validate Customer
+            // -----------------------------
 
-            const existingCustomer = await customerRepository.findBySlug(
-                data.customer.slug
-            );
+            const existingCustomer =
+                await customerRepository.findBySlug(data.customer.slug);
 
             if (existingCustomer) {
                 throw new Error("Customer slug already exists.");
             }
 
-            // Check Administrator Email
+            // -----------------------------
+            // Validate Administrator
+            // -----------------------------
 
-            const existingUser = await userRepository.findByEmail(
-                data.admin.email
-            );
+            const existingUser =
+                await userRepository.findByEmail(data.admin.email);
 
             if (existingUser) {
-                throw new Error("Email already registered.");
+                throw new Error("Administrator email already registered.");
             }
 
+            // -----------------------------
             // Create Customer
+            // -----------------------------
 
             const customer = await customerRepository.create(
                 data.customer,
                 session
             );
 
-            // Create First Organization
+            // -----------------------------
+            // Academic Defaults
+            // -----------------------------
 
-            const organization = await organizationRepository.create(
-                {
-                    ...data.organization,
-                    customerId: customer._id,
-                },
-                session
-            );
+            const defaults =
+                institutionBlueprints[data.organization.type] ||
+                institutionBlueprints.OTHER;
 
-            // Seed Default Roles
+            const academicSetup = {
+                structure:
+                    data.organization.academicSetup?.structure ??
+                    defaults.structure,
 
-            const roles = await roleSeederService.seed(
-                customer._id,
-                session
-            );
+                courseManagement:
+                    data.organization.academicSetup?.courseManagement ??
+                    defaults.courseManagement,
 
-            // Get Super Admin Role
+                labManagement:
+                    data.organization.academicSetup?.labManagement ??
+                    defaults.labManagement,
+            };
+
+            // -----------------------------
+            // Create First Institution
+            // -----------------------------
+
+            const organization =
+                await organizationRepository.create(
+                    {
+                        ...data.organization,
+                        customerId: customer._id,
+                        academicSetup,
+                    },
+                    session
+                );
+
+            // -----------------------------
+            // Seed Roles
+            // -----------------------------
+
+            const roles =
+                await roleSeederService.seed(
+                    customer._id,
+                    session
+                );
 
             const superAdminRole = roles.find(
                 (role) => role.name === "SUPER_ADMIN"
             );
 
+            // -----------------------------
             // Encrypt Password
+            // -----------------------------
 
             const hashedPassword = await bcrypt.hash(
                 data.admin.password,
                 10
             );
 
+            // -----------------------------
             // Create Administrator
+            // -----------------------------
 
             const admin = await userRepository.create(
                 {
@@ -82,7 +121,9 @@ class SetupService {
                 session
             );
 
+            // -----------------------------
             // Create Membership
+            // -----------------------------
 
             await membershipRepository.create(
                 {

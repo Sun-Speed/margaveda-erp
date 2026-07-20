@@ -2,7 +2,7 @@ const path = require("path");
 
 const InstitutionIdentity = require("./identity.model");
 
-const Organization = require("../../../../models/tenant/Organization.model");
+const Organization = require("../../../../models/tenant/Institution.model");
 
 const getIdentity = async (organizationId) => {
 

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import InstitutionForm from "../components/InstitutionForm";
 
 import { getInstitutions } from "../services/institution.service";
+import { createInstitution } from "../services/institution.service";
 
 export default function AddInstitutionPage() {
   const navigate = useNavigate();

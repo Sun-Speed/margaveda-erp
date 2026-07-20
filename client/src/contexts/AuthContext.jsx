@@ -24,6 +24,11 @@ export function AuthProvider({ children }) {
     return data ? JSON.parse(data) : null;
   });
 
+  const [organizationCount, setOrganizationCount] = useState(() => {
+    const data = sessionStorage.getItem("organizationCount");
+    return data ? Number(data) : 0;
+  });
+
   // -----------------------------
   // Current Role
   // -----------------------------
@@ -50,6 +55,8 @@ export function AuthProvider({ children }) {
       JSON.stringify(data.currentOrganization),
     );
 
+    sessionStorage.setItem("organizationCount", data.organizationCount);
+
     setToken(data.token);
 
     setUser(data.user);
@@ -57,6 +64,8 @@ export function AuthProvider({ children }) {
     setMemberships(data.memberships);
 
     setCurrentOrganization(data.currentOrganization);
+
+    setOrganizationCount(data.organizationCount);
   };
 
   // -----------------------------
@@ -72,6 +81,8 @@ export function AuthProvider({ children }) {
 
     sessionStorage.removeItem("organization");
 
+    sessionStorage.removeItem("organizationCount");
+
     setToken(null);
 
     setUser(null);
@@ -79,6 +90,8 @@ export function AuthProvider({ children }) {
     setMemberships([]);
 
     setCurrentOrganization(null);
+
+    setOrganizationCount(0);
   };
 
   // -----------------------------
@@ -98,6 +111,8 @@ export function AuthProvider({ children }) {
     );
 
     setCurrentOrganization(membership.organizationId);
+
+    setOrganizationCount(organizationCount);
   };
 
   // -----------------------------
@@ -112,6 +127,8 @@ export function AuthProvider({ children }) {
     memberships,
 
     currentOrganization,
+
+    organizationCount,
 
     currentRole,
 

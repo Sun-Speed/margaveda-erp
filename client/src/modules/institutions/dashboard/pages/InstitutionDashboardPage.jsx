@@ -1,6 +1,8 @@
-import { GraduationCap, Users, Building2, BookOpen, IndianRupee, ClipboardCheck } from "lucide-react";
 import { useInstitution } from "@/contexts/InstitutionContext";
 import { motion } from "framer-motion";
+import { GraduationCap, Users, Building2, BookOpen, IndianRupee, ClipboardCheck, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext"; 
 
 // Ensure you update your StatCard component to use the same backdrop-blur classes
 import StatCard from "../components/StatCard"; 
@@ -10,6 +12,8 @@ import RecentActivity from "../components/RecentActivity";
 export default function InstitutionDashboardPage() {
   const { institution, loading } = useInstitution();
 
+  const navigate = useNavigate();
+  const { organizationCount } = useAuth();
 
 if (loading) {
   return (
@@ -50,12 +54,37 @@ if (loading) {
       className="p-8 space-y-8 bg-[#0A0A0A] min-h-screen text-white"
     >
       {/* Header with Glass Effect */}
-      <div className="backdrop-blur-xl bg-[#111111]/60 border border-white/10 p-8 rounded-[32px]">
-        <h1 className="text-4xl font-extrabold tracking-tight">{institution?.name}</h1>
-        <p className="text-gray-400 mt-2 flex items-center gap-2">
-          <Building2 size={16} /> {institution?.address}
-        </p>
-      </div>
+
+
+      {/* Expand Your Education Group */}
+
+{organizationCount === 1 && (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="bg-gradient-to-r from-blue-600/10 to-indigo-600/10 border border-blue-500/20 rounded-[32px] p-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
+  >
+    <div>
+      <h2 className="text-2xl font-bold text-white">
+        🚀 Expand Your Education Group
+      </h2>
+
+      <p className="text-gray-400 mt-3 max-w-2xl">
+        You're currently managing a single institution. Add another school,
+        college, academy or training center under the same management account
+        and manage everything from one place.
+      </p>
+    </div>
+
+    <button
+      onClick={() => navigate("/app/institutions/add")}
+      className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white text-black font-semibold hover:bg-blue-400 transition whitespace-nowrap"
+    >
+      <Plus size={20} />
+      Add Institution
+    </button>
+  </motion.div>
+)}
 
       {/* Statistics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

@@ -1,4 +1,4 @@
-const Organization = require("../../../../models/tenant/Organization.model");
+const Organization = require("../../../../models/tenant/Institution.model");
 const InstitutionProfile = require("./institutionProfile.model");
 const ApiError = require("../../../../utils/ApiError");
 

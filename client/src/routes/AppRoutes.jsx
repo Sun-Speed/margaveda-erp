@@ -15,6 +15,7 @@ import LoginPage from "@/modules/auth/pages/LoginPage";
 import OrganizationTypePage from "@/modules/auth/pages/OrganizationTypePage";
 import CustomerInfoPage from "@/modules/auth/pages/CustomerInfoPage";
 import OrganizationInfoPage from "@/modules/auth/pages/OrganizationInfoPage";
+import AcademicConfigurationPage from "@/modules/auth/pages/AcademicConfigurationPage";
 import AdminInfoPage from "@/modules/auth/pages/AdminInfoPage";
 import ReviewPage from "@/modules/auth/pages/ReviewPage";
 
@@ -65,6 +66,8 @@ export default function AppRoutes() {
                     path="/setup/organization"
                     element={<OrganizationInfoPage />}
                 />
+
+                <Route path="/setup/academic" element={<AcademicConfigurationPage />} />
 
                 <Route
                     path="/setup/admin"

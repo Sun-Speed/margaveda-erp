@@ -1,6 +1,6 @@
 const System = require("./system.model");
 
-const Organization = require("../../../../models/tenant/Organization.model");
+const Organization = require("../../../../models/tenant/Institution.model");
 
 const getSystem = async (
     organizationId

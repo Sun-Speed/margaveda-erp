@@ -1,4 +1,4 @@
-const Organization = require("../models/tenant/Organization.model");
+const Organization = require("../models/tenant/Institution.model");
 
 class OrganizationRepository {
 
@@ -37,13 +37,13 @@ class OrganizationRepository {
     async update(id, data) {
 
         return await Organization.findByIdAndUpdate(
-    id,
-    { $set: data },
-    {
-        returnDocument: "after",
-        runValidators: true,
-    }
-);
+            id,
+            { $set: data },
+            {
+                returnDocument: "after",
+                runValidators: true,
+            }
+        );
 
     }
 
@@ -78,6 +78,12 @@ class OrganizationRepository {
 
         return await Organization.findByIdAndDelete(id);
 
+    }
+
+    async countByCustomer(customerId) {
+        return Organization.countDocuments({
+            customerId,
+        });
     }
 
 }

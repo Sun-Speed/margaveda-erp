@@ -7,17 +7,15 @@ import { SetupProvider } from "@/contexts/SetupContext";
 // import { ThemeProvider } from "@/contexts/ThemeContext";
 
 function App() {
-    return (
-        <BrowserRouter>
-            {/* <ThemeProvider> */}
-                <AuthProvider>
-                    <SetupProvider>
-                        <AppRoutes />
-                    </SetupProvider>
-                </AuthProvider>
-            {/* </ThemeProvider> */}
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <SetupProvider>
+          <AppRoutes />
+        </SetupProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
 
 export default App;

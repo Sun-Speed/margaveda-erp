@@ -1,5 +1,5 @@
 const Academic = require("./academic.model");
-const Organization = require("../../../../models/tenant/Organization.model");
+const Organization = require("../../../../models/tenant/Institution.model");
 const getAcademic = async (organizationId) => {
     const organization = await Organization.findById(organizationId);
 

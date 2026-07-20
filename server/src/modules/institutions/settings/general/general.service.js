@@ -1,5 +1,5 @@
 const General = require("./general.model");
-const Organization = require("../../../../models/tenant/Organization.model");
+const Organization = require("../../../../models/tenant/Institution.model");
 
 const getGeneral = async (organizationId) => {
 
